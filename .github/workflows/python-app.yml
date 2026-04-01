@@ -44,8 +44,23 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Deploy to Production
+      - name: Setup Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.10"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Simulate Running App
         run: |
-          echo "Starting deployment..."
-          # Replace this echo with actual deployment commands, for example:
-          # ssh user@your-server "cd /path/to/project && git pull && systemctl restart your-service"
+          echo "Iniciando o app.py no GitHub Actions..."
+          nohup python app.py > app.log 2>&1 &
+          
+          # Dá 3 segundos pro Flask subir
+          sleep 3 
+          
+          # Testa se o app tá respondendo na porta 5000 (rota principal)
+          curl -s http://127.0.0.1:5000 || echo "Falha ao acessar"
+          
+          echo -e "\n\nO app rodou com sucesso no servidor do GitHub Actions!"
