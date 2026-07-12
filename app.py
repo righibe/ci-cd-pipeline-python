@@ -14,7 +14,7 @@ def add_route():
     a = int(a)
     b = int(b)
 
-    return {"result": add(a, b)}
+    return f"result: {add(a, b)}"
 
 @app.route("/sub")
 def sub_route():
@@ -22,12 +22,12 @@ def sub_route():
     b = request.args.get("b")
 
     if a is None or b is None:
-        return {"error": "missing params"}, 400
+        return "error: missing params", 400
 
     a = int(a)
     b = int(b)
 
-    return {"result": subtract(a, b)}
+    return f"result: subtract(a, b)"
 
 @app.route("/mul")
 def mul_route():
@@ -35,12 +35,12 @@ def mul_route():
     b = request.args.get("b")
 
     if a is None or b is None:
-        return {"error": "missing params"}, 400
+        return "error: missing params", 400
 
     a = int(a)
     b = int(b)
 
-    return {"result": multiply(a, b)}
+    return f"result: {multiply(a, b)}"
 
 @app.route("/div")
 def div_route():
@@ -48,12 +48,24 @@ def div_route():
     b = request.args.get("b")
 
     if a is None or b is None:
-        return {"error": "missing params"}, 400
+        return "error: missing params", 400
 
     a = int(a)
     b = int(b)
 
-    return {"result": divide(a, b)}
+    return f"result: {divide(a, b)}"
+
+@app.route("/roulete")
+def roulete_route():
+    import random
+    number = random.randint(0, 6)
+    number_2 = random.randint(0, 6)
+    if number == number_2:
+        return "You lose"
+    else: 
+        return "You win"
+
+    return "Roulete"
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
